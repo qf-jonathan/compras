@@ -1,7 +1,12 @@
+import 'package:compras/models/item.dart';
 import 'package:compras/pages/cart_page.dart';
+import 'package:compras/stores/cart_store.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 class StorePage extends StatelessWidget {
+  final store = CartStore();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,83 +17,56 @@ class StorePage extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => CartPage()),
+                MaterialPageRoute(builder: (context) => CartPage(store: store)),
               );
             },
             child: Row(
               children: <Widget>[
-                Icon(Icons.shop, color: Colors.white,),
-                Text("99", style: TextStyle(color: Colors.white),)
+                Icon(
+                  Icons.shop,
+                  color: Colors.white,
+                ),
+                Observer(
+                  builder: (_) => Text(
+                    "${store.totalItems}",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
               ],
             ),
           ),
         ],
       ),
-      body: StoreList(),
+      body: StoreList(store: store),
     );
   }
 }
 
 class StoreList extends StatelessWidget {
+  StoreList({
+    @required this.store,
+  });
+
+  final CartStore store;
+  final List<Item> items = generateItems();
+
   @override
   Widget build(BuildContext context) {
-    final Orientation orientation = MediaQuery
-        .of(context)
-        .orientation;
+    final Orientation orientation = MediaQuery.of(context).orientation;
     return GridView.count(
       crossAxisCount: (orientation == Orientation.portrait ? 2 : 3),
-      mainAxisSpacing: 4.0,
-      crossAxisSpacing: 4.0,
+      mainAxisSpacing: 6.0,
+      crossAxisSpacing: 6.0,
       padding: const EdgeInsets.all(4.0),
       childAspectRatio: (orientation == Orientation.portrait) ? 1.0 : 1.3,
-      children: <Widget>[
-        StoreItems(
-          text: Text("hola mundo"),
-          color: Colors.red,
+      children: items.map<Widget>((Item item) {
+        return StoreItems(
+          text: Text(item.name),
           onPressed: () {
-            print("hola");
+            store.addItem(item);
           },
-        ),
-        StoreItems(
-          text: Text("hola mundo"),
-          color: Colors.green,
-          onPressed: () {
-            print("hola2");
-          },
-        ),
-        StoreItems(
-          text: Text("hola mundo"),
-          color: Colors.blue,
-        ),
-        StoreItems(
-          text: Text("hola mundo"),
-          color: Colors.yellow,
-        ),
-        StoreItems(
-          text: Text("hola mundo"),
-          color: Colors.amber,
-        ),
-        StoreItems(
-          text: Text("hola mundo"),
-          color: Colors.cyan,
-        ),
-        StoreItems(
-          text: Text("hola mundo"),
-          color: Colors.lime,
-        ),
-        StoreItems(
-          text: Text("hola mundo"),
-          color: Colors.purple,
-        ),
-        StoreItems(
-          text: Text("hola mundo"),
-          color: Colors.amberAccent,
-        ),
-        StoreItems(
-          text: Text("hola mundo"),
-          color: Colors.teal,
-        ),
-      ],
+        );
+      }).toList(),
     );
   }
 }
@@ -96,12 +74,10 @@ class StoreList extends StatelessWidget {
 class StoreItems extends StatelessWidget {
   StoreItems({
     @required this.text,
-    @required this.color,
     @required this.onPressed,
   });
 
   final Text text;
-  final Color color;
   final Function onPressed;
 
   @override
@@ -109,10 +85,11 @@ class StoreItems extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
+        decoration:
+            BoxDecoration(border: Border.all(width: 2.0, color: Colors.black)),
         child: Center(
           child: text,
         ),
-        color: color,
       ),
     );
   }

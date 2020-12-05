@@ -1,53 +1,43 @@
+import 'package:compras/models/item.dart';
+import 'package:compras/stores/cart_store.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 class CartPage extends StatelessWidget {
+  CartPage({
+    @required this.store,
+  });
+
+  final CartStore store;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("hola"),
       ),
-      body: CartItemList(),
+      body: CartItemList(store: store),
     );
   }
 }
 
 class CartItemList extends StatelessWidget {
+  CartItemList({
+    @required this.store,
+  });
+
+  final CartStore store;
+
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: <Widget>[
-        CartItem(text: Text("item1")),
-        CartItem(text: Text("item2")),
-        CartItem(text: Text("item3")),
-        CartItem(text: Text("item4")),
-        CartItem(text: Text("item5")),
-        CartItem(text: Text("item1")),
-        CartItem(text: Text("item2")),
-        CartItem(text: Text("item3")),
-        CartItem(text: Text("item4")),
-        CartItem(text: Text("item5")),
-        CartItem(text: Text("item1")),
-        CartItem(text: Text("item2")),
-        CartItem(text: Text("item3")),
-        CartItem(text: Text("item4")),
-        CartItem(text: Text("item5")),
-        CartItem(text: Text("item1")),
-        CartItem(text: Text("item2")),
-        CartItem(text: Text("item3")),
-        CartItem(text: Text("item4")),
-        CartItem(text: Text("item5")),
-        CartItem(text: Text("item1")),
-        CartItem(text: Text("item2")),
-        CartItem(text: Text("item3")),
-        CartItem(text: Text("item4")),
-        CartItem(text: Text("item5")),
-        CartItem(text: Text("item1")),
-        CartItem(text: Text("item2")),
-        CartItem(text: Text("item3")),
-        CartItem(text: Text("item4")),
-        CartItem(text: Text("item5")),
-      ],
+    return Observer(
+      builder: (_) => ListView(
+        children: store.cartItems.map<Widget>((Item item) {
+          return CartItem(
+            text: Text(item.name),
+          );
+        }).toList(),
+      ),
     );
   }
 }
