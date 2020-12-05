@@ -3,12 +3,13 @@ import 'package:compras/pages/cart_page.dart';
 import 'package:compras/stores/cart_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
 
 class StorePage extends StatelessWidget {
-  final store = CartStore();
-
   @override
   Widget build(BuildContext context) {
+    final store = Provider.of<CartStore>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Aplicación de Compras"),
@@ -17,14 +18,17 @@ class StorePage extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => CartPage(store: store)),
+                MaterialPageRoute(builder: (context) => CartPage()),
               );
             },
             child: Row(
               children: <Widget>[
-                Icon(
-                  Icons.shop,
-                  color: Colors.white,
+                Container(
+                  child: Icon(
+                    Icons.shop,
+                    color: Colors.white,
+                  ),
+                  margin: EdgeInsets.only(right: 5.0),
                 ),
                 Observer(
                   builder: (_) => Text(
@@ -37,22 +41,19 @@ class StorePage extends StatelessWidget {
           ),
         ],
       ),
-      body: StoreList(store: store),
+      body: StoreList(),
     );
   }
 }
 
 class StoreList extends StatelessWidget {
-  StoreList({
-    @required this.store,
-  });
-
-  final CartStore store;
   final List<Item> items = generateItems();
 
   @override
   Widget build(BuildContext context) {
+    final store = Provider.of<CartStore>(context);
     final Orientation orientation = MediaQuery.of(context).orientation;
+
     return GridView.count(
       crossAxisCount: (orientation == Orientation.portrait ? 2 : 3),
       mainAxisSpacing: 6.0,

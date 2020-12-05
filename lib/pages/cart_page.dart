@@ -2,34 +2,25 @@ import 'package:compras/models/item.dart';
 import 'package:compras/stores/cart_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
 
 class CartPage extends StatelessWidget {
-  CartPage({
-    @required this.store,
-  });
-
-  final CartStore store;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("hola"),
+        title: Text("Lista de Productos"),
       ),
-      body: CartItemList(store: store),
+      body: CartItemList(),
     );
   }
 }
 
 class CartItemList extends StatelessWidget {
-  CartItemList({
-    @required this.store,
-  });
-
-  final CartStore store;
-
   @override
   Widget build(BuildContext context) {
+    final store = Provider.of<CartStore>(context);
+
     return Observer(
       builder: (_) => ListView(
         children: store.cartItems.map<Widget>((Item item) {
