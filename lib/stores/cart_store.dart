@@ -15,4 +15,9 @@ abstract class _CartStore with Store {
   void addItem(Item item) {
     cartItems.add(item);
   }
+
+  @action
+  void removeItem(int index) {
+    cartItems.removeAt(index);
+  }
 }

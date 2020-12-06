@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 class StorePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final store = Provider.of<CartStore>(context);
+    final CartStore store = Provider.of<CartStore>(context);
 
     return Scaffold(
       appBar: AppBar(

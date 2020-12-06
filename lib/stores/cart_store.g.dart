@@ -30,6 +30,17 @@ mixin _$CartStore on _CartStore, Store {
   }
 
   @override
+  void removeItem(int index) {
+    final _$actionInfo =
+        _$_CartStoreActionController.startAction(name: '_CartStore.removeItem');
+    try {
+      return super.removeItem(index);
+    } finally {
+      _$_CartStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 totalItems: ${totalItems}

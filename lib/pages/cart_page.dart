@@ -3,6 +3,7 @@ import 'package:compras/stores/cart_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
+import 'package:compras/utils/map_indexed.dart';
 
 class CartPage extends StatelessWidget {
   @override
@@ -23,9 +24,14 @@ class CartItemList extends StatelessWidget {
 
     return Observer(
       builder: (_) => ListView(
-        children: store.cartItems.map<Widget>((Item item) {
-          return CartItem(
-            text: Text(item.name),
+        children: store.cartItems.mapIndexed<Widget>((Item item, int index) {
+          return GestureDetector(
+            onLongPress: () {
+              store.removeItem(index);
+            },
+            child: CartItem(
+              text: Text(item.name),
+            ),
           );
         }).toList(),
       ),
