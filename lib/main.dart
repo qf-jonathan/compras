@@ -20,7 +20,7 @@ class ComprasApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Aplicacion de Compras",
+      title: 'Aplicacion de Compras',
       home: StorePage(),
       debugShowCheckedModeBanner: false,
     );

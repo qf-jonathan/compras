@@ -30,8 +30,8 @@ void main() {
     expect(find.text('1'), findsNothing);
 
     // Tap store item.
-    await tester.tap(find.text('camisa'));
-    await tester.tap(find.text('zapato'));
+    await tester.tap(find.text('[camisa]'));
+    await tester.tap(find.text('[zapato]'));
     await tester.pump();
 
     // Verify that our counter has incremented.

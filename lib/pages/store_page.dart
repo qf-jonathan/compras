@@ -12,7 +12,7 @@ class StorePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Aplicación de Compras"),
+        title: Text('Aplicación de Compras'),
         actions: <Widget>[
           FlatButton(
             onPressed: () {
@@ -32,7 +32,7 @@ class StorePage extends StatelessWidget {
                 ),
                 Observer(
                   builder: (_) => Text(
-                    "${store.totalItems}",
+                    '${store.totalItems}',
                     style: TextStyle(color: Colors.white),
                   ),
                 )
@@ -52,7 +52,7 @@ class StoreList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<CartStore>(context);
-    final Orientation orientation = MediaQuery.of(context).orientation;
+    final orientation = MediaQuery.of(context).orientation;
 
     return GridView.count(
       crossAxisCount: (orientation == Orientation.portrait ? 2 : 3),
@@ -62,7 +62,7 @@ class StoreList extends StatelessWidget {
       childAspectRatio: (orientation == Orientation.portrait) ? 1.0 : 1.3,
       children: items.map<Widget>((Item item) {
         return StoreItems(
-          text: Text(item.name),
+          text: Text('[${item.name}]'),
           onPressed: () {
             store.addItem(item);
           },
@@ -84,7 +84,9 @@ class StoreItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onPressed,
+      onTap: () {
+        onPressed();
+      },
       child: Container(
         decoration:
             BoxDecoration(border: Border.all(width: 2.0, color: Colors.black)),
